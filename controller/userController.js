@@ -1,7 +1,7 @@
 let arr=[]
 const jwt=require("jsonwebtoken")
 const bcrypt=require("bcrypt")
-// const secretkey="abs@fcsdd34"
+const secretkey="abs@fcsdd34"
 const saltRounds=10
 const register = (req,res)=>{
     const details=req.body;
