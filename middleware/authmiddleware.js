@@ -2,13 +2,13 @@ const jwt=require("jsonwebtoken")
 
 
 const authMiddleware=(req,res,next)=>{
-const bearer=req.headers["authorization"];
-if(bearer === undefined){
-    return res.send({msg:"no token"});
-}
-const token=bearer.split(" ")[1]
-console.log(token)
-
+// const bearer=req.headers["authorization"];
+// if(bearer === undefined){
+//     return res.send({msg:"no token"});
+// }
+// const token=bearer.split(" ")[1]
+// console.log(token)
+const token = req.headers["authorization"];
 if(token === undefined){
     return res.send({msg:"user not authorized person or session expired"});
 }

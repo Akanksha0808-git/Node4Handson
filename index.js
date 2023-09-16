@@ -6,17 +6,18 @@ const cors = require("cors"); // Import the cors middleware
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT || 4000;
+const port = process.env.port;
 
 app.use(express.json());
-
-// Allow requests from localhost:3000 (your frontend domain)
-const corsOptions = {
-  origin: 'http://localhost:3000',
-};
-
-app.use(cors(corsOptions)); // Use cors middleware with options
-
+app.use(cors({
+  origin:'*'
+})); 
+app.get("/", (req, res) => {
+  //   res.send("This is the Home Page. Please Route to /api/main for more details");
+  res.send(
+    "<html><body><h1>This is the Home Page. Please Route for more details about ExpressJS.</h1></body></html>"
+  );
+});
 app.use("/api/category", route);
 
 app.listen(port, () => {
