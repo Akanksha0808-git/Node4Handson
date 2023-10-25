@@ -23,3 +23,4 @@ app.use("/api", route);
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}/`);
 });
+
