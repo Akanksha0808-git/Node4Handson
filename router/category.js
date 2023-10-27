@@ -1,12 +1,13 @@
 const route = require("express").Router();
-const {register,login, dashboard, profile,} = require("../controller/userController");
+const {Register,login} = require("../controller/userController");
 const authMiddleware = require("../middleware/authmiddleware");
 
-route.post("/register", register);
+route.post("/register", Register);
 route.post("/login", login);
 
-route.get("/dashboard", authMiddleware, dashboard);
-route.get("/profile", profile);
+route.get('/dashboard',authMiddleware,(req,res)=>{
+    res.send({msg:"this is home page"})
+})
 
 module.exports = route;
 

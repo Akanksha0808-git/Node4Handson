@@ -1,72 +1,54 @@
-const arr2 = [];
-const bcrypt = require("bcrypt");
-const saltround = 10;
-const jwt = require("jsonwebtoken");
+let arr = []; // database
+const saltround = 10
+const jwt=require("jsonwebtoken")
+const secretkey="#@$%^&*"
+const bcrypt = require("bcrypt")
+const Register = (req, res) => {
 
-const register = (req, res) => {
   const userdata = req.body;
   console.log(userdata);
 
-  const found = arr2.find((el) => el.email === userdata.email);
+  const found = arr.find((item) => item.email === userdata.email);
   if (found) {
     return res.send({ msg: "User already exist" });
   }
 
   const hashpassword = bcrypt.hashSync(userdata.password, saltround);
   const temp = {
-    name: userdata.name,
-    contact: userdata.contact,
+    // name: userdata.name,
+    // contact: userdata.contact,
     email: userdata.email,
     password: hashpassword,
   };
-  arr2.push(temp);
-  const token = jwt.sign({ email: userdata.email }, process.env.secretkey, {
-    expiresIn: "36000",
+  arr.push(temp); 
+  const token = jwt.sign({ email: userdata.email },secretkey, {
+    expiresIn: "7 d",
   });
-  res.status(200).send({
-    msg: "User is registered successfully",
-    result: arr2,
-    token: token,
-  });
-};
-const login = async (req, res) => {
-  const userdata = req.body;
-  console.log(userdata);
 
-  const found = arr2.find((el) => el.email === userdata.email);
-  //checking if email is present in data or not
-  if (!found) {
-    return res.send({ msg: "User not registered" });
-  }
+  res.send({msg:"User Registered successfullyy"})
+   
+};
 
-  //checking if password is correct or not
-  const validate = await bcrypt.compare(userdata.password, found.password);
-  if (!validate) {
-    return res.send({ msg: "user password is wrong" });
-  }
+const login = (req, res) => {
+    const userdata = req.body;
+    console.log(userdata);
+  
+    const found = arr.find((item) => item.email === userdata.email);
+    //checking if email is present in data or not
+    if (!found) {
+      return res.send({ msg: "User not registered " });
+    }
+  
+    //checking if password is correct or not
+    const validate =  bcrypt.compareSync(userdata.password, found.password);
+    if (!validate) {
+      return res.send({ msg: "user password is wrong" });
+    }
+  
+    const token = jwt.sign({ email: userdata.email }, secretkey, {
+      expiresIn: "7 d",
+    });
+    res.send({ msg: "User is LoggedIn successfully", userdata, token: token });
+  };
 
-  const token = jwt.sign({ email: userdata.email }, process.env.secretkey, {
-    expiresIn: "36000",
-  });
-  res.send({ msg: "User is LoggedIn successfully", userdata, token: token });
-};
-const dashboard = (req, res) => {
- 
-  return res.send([
-    {
-     
-      randomArticle: "random",
-    },
-  ]);
-};
-const profile = (req, res) => {
-  return res.send([
-    {
-      
-        name: "Akanksha111",
-        email: "test@gmail.com",
-        profileimg: "ifhuyfhgiaf",
-    },
-  ]);
-};
-module.exports = { register, login, dashboard, profile };
+module.exports = { Register, login };
